@@ -36,7 +36,7 @@ pipeline {
         stage('Upload Artifact in JFrog') {
             steps {
                 rtUpload (
-                    serverId: "Calculadora Artifactory",
+                    serverId: "Calculadora",
                     spec: """{
                                 "files": [
                                     {

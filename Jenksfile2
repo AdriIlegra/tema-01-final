@@ -13,7 +13,7 @@ pipeline {
         stage('Retrieving WAR file from JFrog Artifactory') {
             steps {
                 rtDownload(
-                    serverId: "Calculadora Artifactory",
+                    serverId: "Calculadora ",
                     spec: """{
                         "files": [
                         {
