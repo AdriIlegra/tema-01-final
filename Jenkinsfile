@@ -52,7 +52,7 @@ pipeline {
         stage ('Publish Build Info') {
             steps {
                 rtPublishBuildInfo (
-                    serverId: 'Calculadora Artifactory'
+                    serverId: 'Calculadora'
                 )
             }
         }
