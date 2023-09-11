@@ -1,0 +1,22 @@
+{
+  "builders": [
+    {
+      "type": "docker",
+      "image": "ubuntu:20.04",
+      "commit": true,
+      "export_path": "output-docker"
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "shell",
+      "script": "install_dependencies.sh"
+    },
+    {
+      "type": "shell",
+      "inline": [
+        "echo 'Docker image provisioned.'"
+      ]
+    }
+  ]
+}

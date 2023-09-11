@@ -1,0 +1,38 @@
+---
+- name: Install Java and Tomcat
+  hosts: all
+  become: true  # Isso permite executar tarefas com privilégios de superusuário (sudo)
+
+  tasks:
+    - name: Install Java
+      apt:
+        name: openjdk-11  # Nome do pacote Java a ser instalado
+
+    - name: Download Tomcat
+      get_url:
+        url: https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.62/bin/apache-tomcat-9.0.62.tar.gz
+        dest: /usr/
+      register: tomcat_download_result  # Registrando o resultado do download
+
+    - name: Extract Tomcat
+      unarchive:
+        src: /usr/apache-tomcat-9.0.62.tar.gz
+        dest: /usr/
+        remote_src: yes
+      when: tomcat_download_result.changed  # Executa apenas se o download foi bem-sucedido
+
+    - name: Rename Tomcat directory
+      command: mv /usr/apache-tomcat-9.0.62 /usr/tomcat
+      when: tomcat_download_result.changed
+
+    - name: Start Tomcat service
+      systemd:
+        name: tomcat
+        state: started  # Iniciar o serviço Tomcat
+      when: tomcat_download_result.changed
+
+    - name: Enable Tomcat service on boot
+      systemd:
+        name: tomcat
+        enabled: yes  # Habilitar o serviço Tomcat na inicialização
+      when: tomcat_download_result.changed
