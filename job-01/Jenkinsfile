@@ -49,12 +49,18 @@ pipeline {
             }
         }
 
-        stage ('Publish Build Info') {
+        stage('Download Artifact in JFrog') {
             steps {
-                rtPublishBuildInfo (
-                    serverId: 'Calculadora'
+                rtDownload (
+                    serverId: "Calculadora",
+                    spec: """{
+                                "files": [
+                                    {
+                                        "pattern": "Calculadora/tema-04.jar",
+                                        "target": "build/libs/"
+                                    }
+                                ]
+                    }"""
                 )
             }
         }
-    }
-}
