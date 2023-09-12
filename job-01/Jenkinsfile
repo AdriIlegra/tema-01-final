@@ -1,82 +1,16 @@
 pipeline {
-
     agent any
 
     environment {
         CI = 'true'
-        ARTFACTORY_ACCESS_TOKEN = credentials('artfactory-access-token')
-    }
-
-    stages {
-
-        stage('Connect to Git Repository') {
-            steps {
-                git branch: 'main', url: "https://github.com/AdriIlegra/tema-01-final"
-            }
-        }
-
-        stage('Gradle clean') {
-            steps {
-                sh './gradlew clean'
-            }
-        }
-
-        stage('Gradle test') {
-            steps {
-                sh './gradlew test'
-            }
-        }
-
-        stage('Gradle build') {
-            steps {
-                sh './gradlew build'
-            }
-        }
-
-        stage('Upload Artifact in JFrog') {
-            steps {
-                rtUpload (
-                    serverId: "Calculadora",
-                    spec: """{
-                                "files": [
-                                    {
-                                        "pattern": "build/libs/tema-04.jar",
-                                        "target": "Calculadora"
-                                    }
-                                ]
-                    }"""
-                )
-            }
-        }
-
-        stage('Download Artifact in JFrog') {
-            steps {
-                rtDownload (
-                    serverId: "Calculadora",
-                    spec: """{
-                                "files": [
-                                    {
-                                        "pattern": "Calculadora/tema-04.jar",
-                                        "target": "build/libs/"
-                                    }
-                                ]
-                    }
-                )
-            }
-pipeline {
-    agent any
-
-    environment {
-        CI = 'true'
-
-        ARTIFACTORY_ACCESS_TOKEN = credentials('artfactory-access-token') // Substitua pelo ID da credencial de acesso ao Artifactory
+        ARTIFACTORY_SERVER_ID = 'Calculadora' // Nome do servidor de Artifactory configurado no Jenkins
     }
 
     stages {
         stage('Connect to Git Repository') {
             steps {
                 script {
-                    def scmVars = checkout scm
+                    checkout scm
                 }
             }
         }
@@ -107,11 +41,11 @@ pipeline {
                         "files": [
                             {
                                 "pattern": "build/libs/tema-04.jar",
-                                "target": "Calculadora"
+                                "target": "Calculadora/"
                             }
                         ]
                     }"""
-                    server.upload uploadSpec
+                    server.upload(uploadSpec)
                 }
             }
         }
@@ -128,7 +62,7 @@ pipeline {
                             }
                         ]
                     }"""
-                    server.download downloadSpec
+                    server.download(downloadSpec)
                 }
             }
         }
@@ -136,8 +70,6 @@ pipeline {
 
     post {
         success {
-
-            // Faça algo quando o pipeline for bem sucedido
             script {
                 def server = Artifactory.server ARTIFACTORY_SERVER_ID
                 def promotionConfig = [
@@ -146,12 +78,11 @@ pipeline {
                     'targetRepo': 'libs-release-local',
                     'sourceRepo': 'libs-snapshot-local'
                 ]
-                server.promote promotionConfig
-        }
+                server.promote(promotionConfig)
+            }
         }
         failure {
-
-
+            // Faça algo quando o pipeline falhar
         }
     }
 }
