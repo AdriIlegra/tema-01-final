@@ -81,8 +81,4 @@ pipeline {
                 server.promote(promotionConfig)
             }
         }
-        failure {
-            // Faça algo quando o pipeline falhar
-        }
     }
-}
