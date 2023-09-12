@@ -50,36 +50,4 @@ pipeline {
             }
         }
 
-        stage('Download Artifact from JFrog') {
-            steps {
-                script {
-                    def server = Artifactory.server ARTIFACTORY_SERVER_ID
-                    def downloadSpec = """{
-                        "files": [
-                            {
-                                "pattern": "Calculadora/tema-04.jar",
-                                "target": "build/libs/"
-                            }
-                        ]
-                    }"""
-                    server.download(downloadSpec)
-                }
-            }
-        }
-    }
-
-    post {
-        success {
-            script {
-                def server = Artifactory.server ARTIFACTORY_SERVER_ID
-                def promotionConfig = [
-                    'buildName': env.JOB_NAME,
-                    'buildNumber': env.BUILD_NUMBER,
-                    'targetRepo': 'libs-release-local',
-                    'sourceRepo': 'libs-snapshot-local'
-                ]
-                server.promote(promotionConfig)
-            }
-        }
-    }
 }
