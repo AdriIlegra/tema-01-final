@@ -1,13 +1,12 @@
 pipeline {
     agent any
 
-
-    tools {
-        jfrog '5583a991-f197-46fb-aaaa-79143a0fa240'
+    environment {
+        CI = 'true'
+        ARTIFACTORY_SERVER_ID = 'Calculadora' // Nome do servidor de Artifactory configurado no Jenkins
     }
 
-
-    stages {
+      stages {
 
         stage('Retrieving WAR file from JFrog Artifactory') {
             steps {
