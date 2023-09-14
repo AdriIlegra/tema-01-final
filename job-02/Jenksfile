@@ -23,11 +23,22 @@ pipeline {
             }
         }
 
-    post {
-        success {
-            // Ação a ser executada em caso de sucesso (opcional)
-            echo "Pipeline concluída com sucesso!"
-        }
+          stage('Deploying WAR file to Tomcat') {
+                steps {
+                 script {
+                      def server = Tomcat.server('tomcat-01')
+                      def deployer = server.deployer()
+                      deployer.password = 'tomcat'
+                      deployer.username = 'tomcat'
+                      deployer.path = '/manager/text'
+                      deployer.host = 'localhost'
+                      deployer.port = '8080'
+                      deployer.timeout = '10000'
+                      deployer.remote {
+                            file = 'job-01/build/libs/calculadora.war'
+                      }
+                      deployer.deploy()
+                 }
+                }
+          }
     }
-}
-}
