@@ -13,16 +13,9 @@ pipeline {
                                 "target": "job-01/build/libs/calculadora.war"
                             }
                         ]
-                    }"""
-
-                    rtDownload(
-                        serverId: rtServerId,
-                        spec: rtDownloadSpec
-                    )
-                }
+                    }
             }
         }
-
-        }
     }
+
 
