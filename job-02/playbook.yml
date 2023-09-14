@@ -7,32 +7,30 @@
     - name: Install Java
       apt:
         name: openjdk-11  # Nome do pacote Java a ser instalado
+---
+- name: Install and provide a functional Apache Tomcat Server
+  hosts: all
+  become: true
+  become_user: root
 
-    - name: Download Tomcat
+  tasks:
+    - name: Install correct Java version - OpenJDK 11 Headless
+      apt:
+        name: openjdk-11-jre-headless
+        state: present
+
+    - name: Download Apache Tomcat
       get_url:
-        url: https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.62/bin/apache-tomcat-9.0.62.tar.gz
-        dest: /usr/
-      register: tomcat_download_result  # Registrando o resultado do download
+        url: https://archive.apache.org/dist/tomcat/tomcat-10/v10.0.12/bin/apache-tomcat-10.0.12.tar.gz
+        checksum: sha512:e084fc0cc243c0a9ac7de85ffd4b96d00b40b5493ed7ef276d91373fe8036bc953406cd3c48db6b5ae116f2af162fd1bfb13ecdddf5d64523fdd69a9463de8a3
+        dest: /opt/apache-tomcat-10.0.12.tar.gz
 
-    - name: Extract Tomcat
+    - name: Extract Tomcat archive
       unarchive:
-        src: /usr/apache-tomcat-9.0.62.tar.gz
-        dest: /usr/
+        src: /opt/apache-tomcat-10.0.12.tar.gz
+        dest: /
         remote_src: yes
-      when: tomcat_download_result.changed  # Executa apenas se o download foi bem-sucedido
 
-    - name: Rename Tomcat directory
-      command: mv /usr/apache-tomcat-9.0.62 /usr/tomcat
-      when: tomcat_download_result.changed
 
-    - name: Start Tomcat service
-      systemd:
-        name: tomcat
-        state: started  # Iniciar o serviço Tomcat
-      when: tomcat_download_result.changed
 
-    - name: Enable Tomcat service on boot
-      systemd:
-        name: tomcat
-        enabled: yes  # Habilitar o serviço Tomcat na inicialização
-      when: tomcat_download_result.changed
+

@@ -1,22 +1,55 @@
 {
+  "variables": {
+    "dockerhub_username": "",
+    "dockerhub_password": "",
+    "tomcat_dir": "/home/ilegra/.jenkins/workspace/job-02-infra/job-01/build/libs/calculadora.war"
+  },
+
   "builders": [
     {
       "type": "docker",
       "image": "ubuntu:20.04",
       "commit": true,
-      "export_path": "output-docker"
+      "author": "adriana.nogueira@ilegra.com",
+      "changes": [
+        "EXPOSE 8081",
+        "CMD [\"apache-tomcat-10.0.12/bin/catalina.sh\", \"run\"]"
+      ]
     }
   ],
+
   "provisioners": [
     {
       "type": "shell",
-      "script": "install_dependencies.sh"
+      "inline": [
+        "apt-get update",
+        "apt-get install ansible -y"
+      ]
     },
     {
-      "type": "shell",
-      "inline": [
-        "echo 'Docker image provisioned.'"
-      ]
+      "type": "ansible-local",
+      "playbook_file": "/home/ilegra/.jenkins/workspace/job-02-infra/job-02/playbook.yml"
+    },
+    {
+      "type": "file",
+      "source":  "{{user `tomcat_dir`}}",
+      "destination": "/apache-tomcat-10.0.12/webapps/calculator-app.war"
     }
+  ],
+
+  "post-processors": [
+    [
+      {
+        "type": "docker-tag",
+        "repository": "felipedamico/tema-final-01",
+        "tags": ["1.0", "latest"]
+      },
+      {
+        "type": "docker-push",
+        "login": true,
+        "login_username": "{{user `dockerhub_username`}}",
+        "login_password": "{{user `dockerhub_password`}}"
+      }
+    ]
   ]
 }

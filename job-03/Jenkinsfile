@@ -11,7 +11,7 @@ pipeline {
 
         stage('Running Docker image') {
         steps {
-            sh 'docker run --name calculator -d --rm -p 8090:8084 adriananogueira/tema-final-01:tagname'
+            sh 'docker run --name calculator -d --rm -p 8090:8084 adriananogueira/tema-final-01:lates'
           }
         }
     }
