@@ -23,15 +23,6 @@ pipeline {
             }
         }
 
-        // ... Outras etapas do seu pipeline ...
-
-        stage('Build Docker Image') {
-            steps {
-                // Adicione as etapas para construir sua imagem Docker aqui
-            }
-        }
-   }
-
     post {
         success {
             // Ação a ser executada em caso de sucesso (opcional)
