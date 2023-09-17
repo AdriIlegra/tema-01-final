@@ -2,7 +2,7 @@
   "variables": {
     "dockerhub_username": "",
     "dockerhub_password": "",
-    "tomcat_dir": "/home/ilegra/.jenkins/workspace/job-02-infra/job-01/build/libs/calculadora.war"
+    "tomcat_dir": "/usr/local/tomcat/webapps/calculator-app.war"
   },
 
   "builders": [
@@ -12,7 +12,7 @@
       "commit": true,
       "author": "adriana.nogueira@ilegra.com",
       "changes": [
-        "EXPOSE 8081",
+        "EXPOSE 8080",
         "CMD [\"apache-tomcat-10.0.12/bin/catalina.sh\", \"run\"]"
       ]
     }
@@ -28,7 +28,7 @@
     },
     {
       "type": "ansible-local",
-      "playbook_file": "/home/ilegra/.jenkins/workspace/job-02-infra/job-02/playbook.yml"
+      "playbook_file": "/home/adriana.nogueira/ansible/playbook.yml"
     },
     {
       "type": "file",
@@ -41,7 +41,7 @@
     [
       {
         "type": "docker-tag",
-        "repository": "felipedamico/tema-final-01",
+        "repository": "adriananogueira/calculator-app",
         "tags": ["1.0", "latest"]
       },
       {
