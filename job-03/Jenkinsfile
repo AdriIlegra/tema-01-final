@@ -1,7 +1,9 @@
 pipeline {
     agent any
     environment {
-        dockerhub-credentials = credentials('dockerhub-login')
+        registry = "adriananogueira/calculator"
+        registryCredential = 'dockerhub_credentials'
+        dockerImage = ''
     }
     stages {
         stage('Pull Spring Calculator Image From Dockerhub') {
