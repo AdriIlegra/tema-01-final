@@ -1,44 +1,24 @@
 0pipeline {
     agent any
 
+
     stages {
-        stage('Construir Imagem Docker') {
+        stage('Build') {
             steps {
-                script {
-                    // Nome da imagem e tag
-                    def imageName = 'adriananogueira/calculadora'
-                    def imageTag = 'latest'
-
-                    // Construir a imagem Docker usando Dockerfile
-                    sh "docker build -t ${imageName}:${imageTag} ."
-                }
+                echo 'Building..'
+                sh 'mvn clean package'
             }
         }
-
-        stage('Publicar Imagem no Docker Hub') {
+        stage('Test') {
             steps {
-                script {
-                    // Nome da imagem e tag
-                    def imageName = 'adriananogueira/calculadora'
-                    def imageTag = 'latest'
-
-                    // Fazer login no Docker Hub (substitua com suas credenciais)
-                    sh "docker login -u adrianabnogueira -p 123Mudar@"
-
-                    // Marcar a imagem com a tag 'latest'
-                    sh "docker tag ${imageName}:${imageTag} ${imageName}:${imageTag}"
-
-                    // Enviar a imagem para o Docker Hub
-                    sh "docker push ${imageName}:${imageTag}"
-                }
+                echo 'Testing..'
+                sh 'mvn test'
+            }
+        }
+        stage('Deploy') {
+            steps {
+                echo 'Deploying....'
+                sh 'mvn deploy'
             }
         }
     }
-
-    post {
-        always {
-            // Fazer logout do Docker Hub após a conclusão (opcional)
-            sh "docker logout"
-        }
-    }
-}
