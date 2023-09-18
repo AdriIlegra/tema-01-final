@@ -1,5 +1,4 @@
 pipeline {
-
    agent any
 
    stages {
@@ -11,10 +10,7 @@ pipeline {
 
       stage('Run Docker Image') {
          steps {
-
-            sh 'docker run -d -p 8080:8080 adriananogueira/calculadora:latest'
-
-
+            sh 'docker run -d -p 8090:8080 adriananogueira/calculadora:latest'
          }
       }
    }
