@@ -1,18 +1,22 @@
 pipeline {
-    agent any
+    agent {
+        docker {
+            // Use uma imagem Docker que tenha o Docker instalado
+            image 'docker:latest'
+            args '-v /var/run/docker.sock:/var/run/docker.sock'
+        }
+    }
 
     stages {
-
-        stage('Pulling from Docker Hub') {
-        steps {
-            sh 'docker push adriananogueira/tema_01_final:latest'
-          }
+        stage('Build and Push Docker Image') {
+            steps {
+                script {
+                    // Seu código para construir e push da imagem Docker
+                    sh 'docker build -t adriananogueira/tema_01_final:tagname .'
+                    sh 'docker push adriananogueira/tema_01_final:tagname'
+                }
+            }
         }
-
-        stage('Running Docker image') {
-        steps {
-            sh 'docker run --name calculator -d --rm -p 8080:80 adriananogueira/tema_01_final:latest'
-          }
-        }
+        // Outros estágios do seu pipeline
     }
 }
