@@ -1,24 +1,17 @@
-0pipeline {
+pipeline {
     agent any
-
-
+    environment {
+        dockerhub-credentials = credentials('dockerhub-login')
+    }
     stages {
-        stage('Build') {
+        stage('Pull Spring Calculator Image From Dockerhub') {
             steps {
-                echo 'Building..'
-                sh 'mvn clean package'
+                sh 'docker pull adriananogueira/calculator
             }
         }
-        stage('Test') {
+        stage('Run Spring Calculator') {
             steps {
-                echo 'Testing..'
-                sh 'mvn test'
-            }
-        }
-        stage('Deploy') {
-            steps {
-                echo 'Deploying....'
-                sh 'mvn deploy'
+                sh 'docker run --name calculator -dp 8090:8080 adriananogueira/calculator'
             }
         }
     }
