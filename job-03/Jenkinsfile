@@ -5,13 +5,13 @@ pipeline {
 
         stage('Pulling from Docker Hub') {
         steps {
-            sh 'docker push adriananogueira/tema_01_final:tagname'
+            sh 'docker push adriananogueira/tema_01_final:latest'
           }
         }
 
         stage('Running Docker image') {
         steps {
-            sh 'docker run --name calculator -d --rm -p 8080:80 adriananogueira/tema_01_final:tagname'
+            sh 'docker run --name calculator -d --rm -p 8080:80 adriananogueira/tema_01_final:latest'
           }
         }
     }
