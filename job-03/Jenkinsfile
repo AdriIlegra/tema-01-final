@@ -1,20 +1,21 @@
 pipeline {
-    agent any
 
-    stages {
-        stage('Pull da Imagem Docker') {
-            steps {
-                script {
-                    // Nome da imagem e tag
-                    def dockerImage = 'adriananogueira/tema_01_final'
-                    def dockerTag = 'latest'
+   agent any
 
-                    // Fazer pull da imagem Docker
-                    sh "docker pull ${dockerImage}:${dockerTag}"
-                }
-            }
-        }
+   stages {
+      stage('Download Image from Docker Hub') {
+         steps {
+            sh 'docker pull adriananogueira/calculadora:latest'
+         }
+      }
 
-    }
+      stage('Run Docker Image') {
+         steps {
+
+            sh 'docker run -d -p 8080:8080 adriananogueira/calculadora:latest'
+
+
+         }
+      }
+   }
 }
-
