@@ -6,7 +6,7 @@ pipeline {
     stages {
         stage('Pull Spring Calculator Image From Dockerhub') {
             steps {
-                sh 'docker pull adriananogueira/calculator
+                sh 'docker pull adriananogueira/calculator'
             }
         }
         stage('Run Spring Calculator') {
@@ -16,3 +16,7 @@ pipeline {
         }
     }
 }
+
+
+
+
