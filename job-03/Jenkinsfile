@@ -2,7 +2,6 @@
     agent any
 
     environment {
-    dockerhub-credentials = credentials('dockerhub')
     docker-system = 'docker'
     }
 
