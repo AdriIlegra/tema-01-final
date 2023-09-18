@@ -1,17 +1,49 @@
-pipeline {
-   agent any
+0pipeline {
+    agent any
 
-   stages {
-      stage('Download Image from Docker Hub') {
-         steps {
-            sh 'docker pull adriananogueira/calculadora:latest'
-         }
-      }
+    environment {
+    dockerhub-credentials = credentials('dockerhub')
+    docker-system = 'docker'
+    }
 
-      stage('Run Docker Image') {
-         steps {
-            sh 'docker run -d -p 8090:8080 adriananogueira/calculadora:latest'
-         }
-      }
-   }
+    stages {
+        stage('Construir Imagem Docker') {
+            steps {
+                script {
+                    // Nome da imagem e tag
+                    def imageName = 'adriananogueira/calculadora'
+                    def imageTag = 'latest'
+
+                    // Construir a imagem Docker usando Dockerfile
+                    sh "docker build -t ${imageName}:${imageTag} ."
+                }
+            }
+        }
+
+        stage('Publicar Imagem no Docker Hub') {
+            steps {
+                script {
+                    // Nome da imagem e tag
+                    def imageName = 'adriananogueira/calculadora'
+                    def imageTag = 'latest'
+
+                    // Fazer login no Docker Hub (substitua com suas credenciais)
+                    sh "docker login -u adrianabnogueira -p 123Mudar@"
+
+                    // Marcar a imagem com a tag 'latest'
+                    sh "docker tag ${imageName}:${imageTag} ${imageName}:${imageTag}"
+
+                    // Enviar a imagem para o Docker Hub
+                    sh "docker push ${imageName}:${imageTag}"
+                }
+            }
+        }
+    }
+
+    post {
+        always {
+            // Fazer logout do Docker Hub após a conclusão (opcional)
+            sh "docker logout"
+        }
+    }
 }
