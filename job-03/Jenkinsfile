@@ -1,10 +1,6 @@
 0pipeline {
     agent any
 
-    environment {
-    docker-system = 'docker'
-    }
-
     stages {
         stage('Construir Imagem Docker') {
             steps {
