@@ -15,7 +15,6 @@ pipeline {
                     }
                 }
                 sh "docker build -t adriananogueira/tema_01_final:latest ."
-                sh "docker push adriananogueira/tema_01_final:latest"
             }
         }
     }
