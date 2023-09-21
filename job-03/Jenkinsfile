@@ -2,7 +2,7 @@ pipeline {
     agent any
     environment {
         registry = "adriananogueira/tema_01_final" // Seu nome de registro/repositório no Docker Hub
-               registryCredential = 'dockerhub_credentials' // Nome da credencial de Docker Hub configurada no Jenkins
+               registryCredential = 'dockerhub' // Nome da credencial de Docker Hub configurada no Jenkins
                dockerImage = "adriananogueira/tema_01_final:tagname" // Nome e tag da imagem Docker
            }
     stages {
