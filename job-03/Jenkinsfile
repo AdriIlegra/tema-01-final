@@ -14,8 +14,8 @@ pipeline {
                         customImage.push()
                     }
                 }
-                sh "docker build -t adriananogueira/tema_01_final:tagname ."
-                sh "docker push adriananogueira/tema_01_final:tagname"
+                sh "docker build -t adriananogueira/tema_01_final:latest"
+                sh "docker push adriananogueira/tema_01_final:latest"
             }
         }
     }
