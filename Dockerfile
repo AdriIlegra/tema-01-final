@@ -6,4 +6,4 @@ ENV DOCKERHUB_USERNAME=""
 ENV DOCKERHUB_PASSWORD=""
 
 # Copie o arquivo WAR da sua aplicação para o diretório de implantação do Tomcat
-COPY ./target/*.war /usr/local/tomcat/webapps/
+COPY app/target/*.jar ./app.jar
