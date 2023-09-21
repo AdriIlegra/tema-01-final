@@ -1,17 +1,19 @@
-# Use a imagem base do Tomcat
+# Use a imagem oficial do Tomcat como base
 FROM tomcat:9.0-jdk11-openjdk-slim
 
-# Defina variáveis de ambiente para o nome de usuário e senha do Docker Hub
-ENV DOCKERHUB_USERNAME=""
-ENV DOCKERHUB_PASSWORD=""
+# Copie o arquivo WAR da sua aplicação para o diretório webapps do Tomcat
+COPY calculadora.war /usr/local/tomcat/webapps/
 
+# Opcional: se você tiver variáveis de ambiente para configurar sua aplicação, defina-as aqui
+# ENV VARIAVEL1=valor1
+# ENV VARIAVEL2=valor2
 
-# Use a imagem base do Tomcat como ponto de partida
-FROM tomcat:latest
+# Exponha a porta em que o Tomcat estará ouvindo (geralmente 8080 por padrão)
+EXPOSE 8084
 
-
-# Exponha a porta em que o Tomcat está ouvindo (geralmente a porta 8080)
-EXPOSE 8080
-
-# Comando para iniciar o Tomcat quando o contêiner for executado
+# Comando para iniciar o Tomcat
 CMD ["catalina.sh", "run"]
+
+
+
+
