@@ -6,5 +6,5 @@ WORKDIR /home/gradle/src
 
 
 FROM jetty:${JETTY_VERSION} as jetty
-COPY --from=gradle /home/gradle/src/build/libs/tema04Application-0.0.1-SNAPSHOT.war /var/lib/jetty/webapps/ROOT.war
+COPY --from=gradle /home/gradle/src/build/libs/tema04.war /var/lib/jetty/webapps/ROOT.war
 EXPOSE 8084
