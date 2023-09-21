@@ -1,9 +1,10 @@
 pipeline {
     agent any
     environment {
-        DOCKERHUB_USERNAME = credentials('dockerhub_username')
-        DOCKERHUB_PASSWORD = credentials('dockerhub_password')
-    }
+        registry = "adriananogueira/tema_01_final" // Seu nome de registro/repositório no Docker Hub
+               registryCredential = 'dockerhub_credentials' // Nome da credencial de Docker Hub configurada no Jenkins
+               dockerImage = "adriananogueira/tema_01_final:tagname" // Nome e tag da imagem Docker
+           }
     stages {
         stage('Build and Push Docker Image') {
             steps {
