@@ -1,24 +1,30 @@
 pipeline {
     agent any
     environment {
-        registry = "adriananogueira/calculator"
-        registryCredential = 'dockerhub_credentials'
-        dockerImage = ''
+        registry = "adriananogueira/tema_01_final" // Seu nome de registro/repositório no Docker Hub
+        registryCredential = 'dockerhub_credentials' // Nome da credencial de Docker Hub configurada no Jenkins
+        dockerImage = "adriananogueira/tema_01_final:tagname" // Nome e tag da imagem Docker
     }
     stages {
-        stage('Pull Spring Calculator Image From Dockerhub') {
+        stage('Build and Push Docker Image') {
             steps {
-                sh 'docker pull adriananogueira/calculator'
-            }
-        }
-        stage('Run Spring Calculator') {
-            steps {
-                sh 'docker run --name calculator -dp 8090:8080 adriananogueira/calculator'
+                script {
+                    // Defina a tag da imagem Docker a ser construída
+                    dockerImage = dockerImage
+                    // Construa a imagem Docker a partir do Dockerfile
+
+                    sh "docker build -t ${dockerImage} ."
+
+                    // Autenticação no registro Docker (Docker Hub)
+                    docker.withRegistry(registry, registryCredential) {
+                        // Faça o push da imagem para o Docker Hub
+                        sh "docker push ${dockerImage}"
+                    }
+                }
             }
         }
     }
 }
-
 
 
 
