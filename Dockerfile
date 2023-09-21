@@ -1,4 +1,4 @@
-ARG GRADLE_VERSION=7.1.0-jdk
+ARG GRADLE_VERSION=6.8.3-jdk11
 ARG JETTY_VERSION=9.4.44-jdk11
 FROM gradle:${GRADLE_VERSION} as gradle
 COPY --chown=gradle:gradle . /home/gradle/src

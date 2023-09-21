@@ -1,23 +1,22 @@
 plugins {
 	id 'java'
-	id 'org.springframework.boot' version '2.5.5' // Substitua pela versão do Spring Boot que você está usando
+	id 'org.springframework.boot' version '2.5.5' // Versão do Spring Boot
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE' // Versão do plugin de gerenciamento de dependências Spring (opcional)
 }
 
 group = 'com.example'
 version = '0.0.1-SNAPSHOT'
 
-java {
-	sourceCompatibility = '11'
+compileJava {
+	sourceCompatibility = JavaVersion.VERSION_17
+	targetCompatibility = JavaVersion.VERSION_17
 }
+
 
 repositories {
 	mavenCentral()
 }
 
-bootJar {
-	mainClassName = 'br.adriana.nogueira.springboot2.SpringBoot2Application'
-}
 
 
 configurations.all {
