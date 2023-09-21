@@ -6,5 +6,3 @@ ENV DOCKERHUB_USERNAME=""
 ENV DOCKERHUB_PASSWORD=""
 
 
-# Copie o arquivo war para a pasta webapps do Tomcat
-COPY ./build/libs/*.war /usr/local/tomcat/webapps/
