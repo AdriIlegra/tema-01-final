@@ -7,4 +7,4 @@ WORKDIR /var/lib/jetty/webapps/
 
 FROM jetty:${JETTY_VERSION} as jetty
 COPY --from=gradle /var/lib/jetty/webapps/ /var/lib/jetty/webapps/
-EXPOSE 8084
+EXPOSE 8083
