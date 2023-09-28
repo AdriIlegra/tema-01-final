@@ -11,7 +11,7 @@ pipeline {
 
       stage('Run Docker Image') {
          steps {
-            sh 'docker run --name tema_01_final -p 8083:8083 adriananogueira/tema_01_final:latest'
+            sh 'docker run --name tema_01_final -p 8084:8084 adriananogueira/tema_01_final:latest'
             }
       }
    }

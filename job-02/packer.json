@@ -12,7 +12,7 @@
       "commit": true,
       "author": "adriana.nogueira@ilegra.com",
       "changes": [
-        "EXPOSE 8080",
+        "EXPOSE 8090",
         "CMD [\"apache-tomcat-10.0.12/bin/catalina.sh\", \"run\"]"
       ]
     }
@@ -41,7 +41,7 @@
     [
       {
         "type": "docker-tag",
-        "repository": "adriananogueira/calculator-app",
+        "repository": "adriananogueira/tema_01_final",
         "tags": ["1.0", "latest"]
       },
       {
