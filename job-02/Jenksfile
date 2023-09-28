@@ -15,7 +15,12 @@ pipeline {
                         ]
                     }"""
                 }
-            }
+            } stage('Packer Build Image') {
+                        steps {
+                                    withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKERHUB_USERNAME', passwordVariable: 'DOCKERHUB_PASSWORD')]) {
+                                        sh "packer build --var dockerhub_username=$DOCKERHUB_USERNAME --var dockerhub_password=$DOCKERHUB_PASSWORD packer.json"
+
+
         }
     }
 }
