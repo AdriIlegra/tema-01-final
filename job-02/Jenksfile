@@ -21,24 +21,7 @@ pipeline {
                 }
             }
         }
-        stage('Deploying WAR file to Tomcat') {
-            steps {
-                script {
 
-                    def uploadSpec = """{
-                        "files": [
-                            {
-                                "pattern": "job-01/build/libs/calculadora.war",
-                                "target": "tema-final-01/calculadora.war"
-                            }
-                        ]
-                    }"""
-                    server.upload spec: uploadSpec
-                }
-            }
-
-
-        }
     }
 }
 
