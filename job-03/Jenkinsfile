@@ -1,32 +1,35 @@
 pipeline {
     agent any
     environment {
-        registry = "adriananogueira/tema_01_final" // Seu nome de registro/repositório no Docker Hub
-               registryCredential = 'dockerhub' // Nome da credencial de Docker Hub configurada no Jenkins
-               dockerImage = "adriananogueira/tema_01_final:tagname" // Nome e tag da imagem Docker
-           }
+        // Defina o nome do registro DockerHub
+        registry = "adriananogueira/tema_01_final"
+        // Defina o nome e a tag da imagem Docker
+        dockerImage = "adriananogueira/tema_01_final:latest"
+    }
     stages {
         stage('Build and Push Docker Image') {
             steps {
                 script {
-                  withDockerRegistry([credentialsId: dockerhub, url: 'https://index.docker.io/v1/']) {
-                      // Use echo para enviar nome de usuário e senha para o comando docker login de forma segura
-                      sh "echo adriananogueira\n123Mudar@ | docker login --username adriananogueira --password-stdin"
-                  }
+                    // Use withDockerRegistry para fazer login de forma segura no Docker Hub
+                    withDockerRegistry([credentialsId: 'dockerhub', url: 'https://index.docker.io/v1/']) {
+                        // Use 'echo' para fornecer o nome de usuário e a senha de forma segura
+                        sh "echo adriananogueira\n123Mudar@ | docker login --username adriananogueira --password-stdin"
+                    }
+                    // Construa a imagem Docker
+                    sh "docker build -t $dockerImage ."
+                    // Faça push da imagem Docker
+                    sh "docker push $dockerImage"
                 }
-                sh "docker build -t adriananogueira/tema_01_final:latest ."
-                sh "docker pull adriananogueira/tema_01_final"
             }
         }
 
         stage('Run Docker Image') {
             steps {
-                sh "docker run -d -p 8090:8090 adriananogueira/tema_01_final"
+                // Execute o contêiner a partir da imagem Docker
+                sh "docker run -d -p 8090:8090 $dockerImage"
+                // Verifique os contêineres em execução
                 sh "docker ps -a"
             }
         }
     }
 }
-
-
-
