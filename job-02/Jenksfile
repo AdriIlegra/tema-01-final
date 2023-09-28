@@ -14,15 +14,8 @@ pipeline {
                             }
                         ]
                     }"""
-                    server = Artifactory.server rtServerId
-                    def buildInfo = Artifactory.newBuildInfo()
-                    server.download spec: rtDownloadSpec, buildInfo: buildInfo
-                    server.publishBuildInfo buildInfo
                 }
             }
         }
-
     }
 }
-
-
