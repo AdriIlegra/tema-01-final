@@ -30,12 +30,17 @@ pipeline {
 
         stage('Build Docker Image with Packer') {
             steps {
-                // Define your Docker Hub credentials
-                withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKERHUB_USERNAME', passwordVariable: 'DOCKERHUB_PASSWORD')]) {
-                    // Execute Packer build with Docker credentials
-                    sh "packer build --var dockerhub_username=$DOCKERHUB_USERNAME --var dockerhub_password=$DOCKERHUB_PASSWORD packer.json"
+                script {
+                    // Define o nome da credencial do Docker Hub
+                    def dockerhubCredentialId = 'dockerhub'
+
+                    // Use as credenciais do Docker Hub no comando Packer
+                    withCredentials([usernamePassword(credentialsId: dockerhubCredentialId, usernameVariable: 'DOCKERHUB_USERNAME', passwordVariable: 'DOCKERHUB_PASSWORD')]) {
+                        sh "packer build -var 'dockerhub_username=\$DOCKERHUB_USERNAME' -var 'dockerhub_password=\$DOCKERHUB_PASSWORD' packer.json"
+                    }
                 }
             }
         }
     }
 }
+
