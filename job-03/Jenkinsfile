@@ -9,7 +9,7 @@ pipeline {
         stage('Build and Push Docker Image') {
             steps {
                 script {
-                  withDockerRegistry([credentialsId: 'your-credentials-id', url: 'https://index.docker.io/v1/']) {
+                  withDockerRegistry([credentialsId: 'dockerhub, url: 'https://index.docker.io/v1/']) {
                       // Use echo para enviar nome de usuário e senha para o comando docker login de forma segura
                       sh "echo adriananogueira\n123Mudar@ | docker login --username adriananogueira --password-stdin"
                   }
