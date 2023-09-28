@@ -3,19 +3,17 @@ pipeline {
     environment {
         registry = "adriananogueira/tema_01_final" // Seu nome de registro/repositório no Docker Hub
                registryCredential = 'dockerhub' // Nome da credencial de Docker Hub configurada no Jenkins
-               dockerImage = "adriananogueira/tema_01_final:latest" // Nome e tag da imagem Docker
+               dockerImage = "adriananogueira/tema_01_final:tagname" // Nome e tag da imagem Docker
            }
     stages {
-           stage('Cloning Git') {
-                steps {
-                    git branch: 'main',
-                    credentialsId: 'gitlab', url: 'https://gitlab.com/adriananogueira/tema_01_final.git'
-                }
-            }
-        stage('Build Docker Image') {
+        stage('Build and Push Docker Image') {
             steps {
-
-                sh "docker login -u adriananogueira -p 123Mudar@"
+                script {
+                    docker.withRegistry( '', registryCredential ) {
+                        def customImage = docker.build registry + ":$BUILD_NUMBER"
+                        customImage.push()
+                    }
+                }
                 sh "docker build -t adriananogueira/tema_01_final:latest ."
                 sh "docker pull adriananogueira/tema_01_final"
             }
@@ -23,7 +21,7 @@ pipeline {
 
         stage('Run Docker Image') {
             steps {
-                sh "docker run -d -p 8083:8083 adriananogueira/tema_01_final"
+                sh "docker run -d -p 8090:8090 adriananogueira/tema_01_final"
                 sh "docker ps -a"
             }
         }
