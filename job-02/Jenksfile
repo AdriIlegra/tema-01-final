@@ -24,7 +24,7 @@ pipeline {
         stage('Deploying WAR file to Tomcat') {
             steps {
                 script {
-                    def server = Artifactory.server "tema-final-01-artifactory"
+
                     def uploadSpec = """{
                         "files": [
                             {
