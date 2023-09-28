@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     stages {
-        stage('Retrieving WAR file from JFrog Artifactory') {
+        stage('Retrieve WAR file from JFrog Artifactory') {
             steps {
                 script {
                     def rtServerId = "tema-final-01-artifactory"
@@ -14,16 +14,28 @@ pipeline {
                             }
                         ]
                     }"""
+
+                    // Use the Artifactory plugin to download the WAR file
+                    def buildInfo = server.download spec: rtDownloadSpec, serverId: rtServerId
+
+                    // Check if the download was successful
+                    if (buildInfo) {
+                        echo "WAR file downloaded successfully."
+                    } else {
+                        error "Failed to download the WAR file from Artifactory."
+                    }
                 }
-            } stage('Packer Build Image') {
-                        steps {
-                                    withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKERHUB_USERNAME', passwordVariable: 'DOCKERHUB_PASSWORD')]) {
-                                        sh "packer build --var dockerhub_username=$DOCKERHUB_USERNAME --var dockerhub_password=$DOCKERHUB_PASSWORD packer.json"
+            }
+        }
 
-
+        stage('Build Docker Image with Packer') {
+            steps {
+                // Define your Docker Hub credentials
+                withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKERHUB_USERNAME', passwordVariable: 'DOCKERHUB_PASSWORD')]) {
+                    // Execute Packer build with Docker credentials
+                    sh "packer build --var dockerhub_username=$DOCKERHUB_USERNAME --var dockerhub_password=$DOCKERHUB_PASSWORD packer.json"
+                }
+            }
         }
     }
-}
-}
-}
 }
