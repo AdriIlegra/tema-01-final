@@ -8,8 +8,8 @@ pipeline {
     stages {
            stage('Cloning Git') {
                 steps {
-                     git '
-                        credentialsId: 'gitlab', url: 'https://gitlab.com/adriananogueira/tema_01_final.git'
+                    git branch: 'main',
+                    credentialsId: 'gitlab', url: 'https://gitlab.com/adriananogueira/tema_01_final.git'
                 }
             }
         stage('Build Docker Image') {
