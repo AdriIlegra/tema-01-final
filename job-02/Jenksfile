@@ -21,13 +21,23 @@ pipeline {
                 }
             }
         }
-
-                 stage('Building a Docker image through Packer and pushing to Docker Hub') {
-                        steps {
-                            withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKERHUB_USERNAME', passwordVariable: 'DOCKERHUB_PASSWORD')]) {
-                                sh "packer build --var dockerhub_username=$DOCKERHUB_USERNAME --var dockerhub_password=$DOCKERHUB_PASSWORD job-02/packer.json"
-             }
+        stage('Deploying WAR file to Tomcat') {
+            steps {
+                script {
+                    def server = Artifactory.server "tema-final-01-artifactory"
+                    def uploadSpec = """{
+                        "files": [
+                            {
+                                "pattern": "job-01/build/libs/calculadora.war",
+                                "target": "tema-final-01/calculadora.war"
+                            }
+                        ]
+                    }"""
+                    server.upload spec: uploadSpec
+                }
             }
+
+
         }
     }
 }
