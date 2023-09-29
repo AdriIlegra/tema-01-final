@@ -14,7 +14,7 @@ pipeline {
        ansible = {
          source = "github.com/hashicorp/ansible"
        }
-     }
+
 
     stages {
         stage('Verificação do Código') {
