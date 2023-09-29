@@ -7,15 +7,6 @@ pipeline {
         DOCKERHUB_PASSWORD = credentials('dockerhub')
     }
 
-    required_plugins {
-       docker = {
-         source = "github.com/hashicorp/docker"
-       }
-       ansible = {
-         source = "github.com/hashicorp/ansible"
-       }
-
-
     stages {
         stage('Verificação do Código') {
             steps {
@@ -59,5 +50,4 @@ pipeline {
             }
         }
     }
-}
 }
