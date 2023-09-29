@@ -3,7 +3,8 @@ pipeline {
 
     environment {
         DOCKERHUB_USERNAME = credentials('dockerhub')
-        DOCKERHUB_PASSWORD = credentials(dockerhub)
+
+
     }
 
     stages {
