@@ -2,7 +2,7 @@
   "variables": {
     "dockerhub_username": "adriananogueira",
     "dockerhub_password": "dckr_pat_6FsdxnU6Yye5FkiryB8JrL3hftg",
-    "tomcat_dir": "/home/vagrant/tema_01_final/job-02/calculator-app.war"
+    "tomcat_dir": "/var/lib/jenkins/workspace/Job-02/job-02/packer.json'"
   },
   "builders": [
     {
