@@ -3,6 +3,8 @@
   hosts: localhost
   become: yes
   become_method: sudo
+  become_user: root
+  remote_user: adriana
   vars:
     ansible_sudo_executable: /home/adriana/.ssh/id_rsa
 
