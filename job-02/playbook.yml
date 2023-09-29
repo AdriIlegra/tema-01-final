@@ -1,24 +1,14 @@
 ---
-- name: Deploy Application
-  hosts: target_server  # Substitua "target_server" pelo nome do host ou grupo de hosts onde deseja implantar a aplicação.
-  become: yes  # Torna-se superusuário (root) durante a execução.
+- name: Conexao
+  hosts: localhost
+  connection: local
+
 
   tasks:
-    - name: Copy WAR file to Tomcat webapps directory
-      copy:
-        src: /caminho/do/seu/war/applicacao.war  # Substitua pelo caminho real do seu arquivo WAR.
-        dest: /usr/local/tomcat/webapps/applicacao.war  # Substitua pelo caminho correto do diretório do Tomcat.
+    - name: Instalar o Java
+      apt:
+        name: openjdk-11-jre
+        state: latest
+      become: yes
 
-    - name: Ensure Tomcat service is running
-      service:
-        name: tomcat
-        state: started
 
-    - name: Wait for Tomcat to start
-      wait_for:
-        host: localhost
-        port: 8080
-        delay: 10
-        timeout: 60
-
-    # Outras tarefas necessárias, como configurar variáveis de ambiente, reiniciar serviços, etc.
