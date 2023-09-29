@@ -7,45 +7,34 @@ pipeline {
 
     }
 
-    stages {
-        stage('Retrieve WAR file from JFrog Artifactory') {
-            steps {
-                script {
-                    def rtServerId = "tema-final-01-artifactory"
-                    def rtDownloadSpec = """{
-                        "files": [
-                            {
-                                "pattern": "tema-final-01/calculadora.war",
-                                "target": "job-01/build/libs/calculadora.war"
-                            }
-                        ]
-                    }"""
-                }
-            }
-        }
+pipeline {
+    agent any
 
+    environment {
+        // Defina as variáveis de ambiente necessárias, como as credenciais do Artifactory
+        ARTIFACTORY_SERVER_ID = 'artifactory-server'
+    }
+
+    stages {
         stage('Checkout') {
             steps {
                 checkout scm
             }
         }
 
-        stage('Build Docker Image with Packer') {
+        stage('Download Artefato do JFrog Artifactory') {
             steps {
-                sh 'packer build -var "dockerhub_username=${DOCKERHUB_USERNAME}" -var "dockerhub_password=${DOCKERHUB_PASSWORD}" packer.json'
-            }
-        }
-
-        stage('Deploy Application with Ansible') {
-            steps {
-                sh 'ansible-playbook -i inventory.ini playbook.yml'
-            }
-        }
-
-        stage('Push Docker Image to Docker Hub') {
-            steps {
-                withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKERHUB_USERNAME', passwordVariable: 'DOCKERHUB_PASSWORD')]) {
-                    sh 'docker push adriananogueira/calculadora:latest'
+                script {
+                    def server = Artifactory.server ARTIFACTORY_SERVER_ID
+                    def rtDownloadSpec = """{
+                        "files": [
+                            {
+                                "pattern": "my-repo/my-artifact/*.war", // Substitua com o padrão do seu artefato
+                                "target": "${env.WORKSPACE}/my-artifact.war" // Define o destino local
+                            }
+                        ]
+                    }"""
+                    def rtBuildInfo = rtDownload server: server, spec: rtDownloadSpec
                 }
             }
         }
