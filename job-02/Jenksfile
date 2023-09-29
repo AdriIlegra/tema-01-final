@@ -25,7 +25,7 @@ pipeline {
                             }
                         ]
                     }"""
-                    def rtBuildInfo = rtDownload server: server, spec: rtDownloadSpec
+                    def rtBuildInfo = rtDownload spec: rtDownloadSpec
                 }
             }
         }
