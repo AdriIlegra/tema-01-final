@@ -1,4 +1,5 @@
 ---
+---
 - name: Install and provide a functional Apache Tomcat Server
   hosts: all
   become: true
@@ -10,26 +11,32 @@
         name: openjdk-11-jre-headless
         state: present
 
-    - name: Criar apache Tomcat
-      -get_url:
+    - name: Baixar Apache Tomcat
+      get_url:
         url: https://downloads.apache.org/tomcat/tomcat-9/v9.0.41/bin/apache-tomcat-9.0.41.tar.gz
         dest: /opt/apache-tomcat-9.0.41.tar.gz
-        mode: 0755
+        mode: '0755'
         owner: root
         group: root
         validate_certs: no
         force: yes
 
+    - name: Descompactar o arquivo
+      unarchive:
+        src: /opt/apache-tomcat-9.0.41.tar.gz
+        dest: /opt/
+        remote_src: yes
+        owner: root
+        group: root
+        mode: '0755'
 
-
-
-
-    - name: Copiar o arquivo de configuração
+    - name: Copiar o arquivo de configuração do serviço
       copy:
-        src: /opt/tomcat.service
+        src: /caminho/local/para/tomcat.service
         dest: /etc/systemd/system/tomcat.service
         owner: root
         group: root
-        mode: 0755
-        validate: /usr/sbin/tomcat9 -configtest
-        notify: restart tomcat
+        mode: '0755'
+      notify:
+        - restart tomcat
+
