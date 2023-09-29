@@ -33,7 +33,7 @@ pipeline {
 
        stage('Build Docker Image with Packer') {
            steps {
-               sh 'packer build -var "DOCKERHUB_USERNAME=${DOCKERHUB_USERNAME}" -var "DOCKERHUB_PASSWORD=${DOCKERHUB_PASSWORD}" packer.json'
+               sh 'packer build -var "DOCKERHUB_USERNAME=${DOCKERHUB_USERNAME}" -var "DOCKERHUB_PASSWORD=${DOCKERHUB_PASSWORD}" job-02/packer.json'
            }
        }
 
