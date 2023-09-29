@@ -2,7 +2,7 @@
   "variables": {
     "dockerhub_username": "adriananogueira",
     "dockerhub_password": "dckr_pat_6FsdxnU6Yye5FkiryB8JrL3hftg",
-    "tomcat_dir": "/usr/local/tomcat/webapps/calculator-app.war"
+    "tomcat_dir": "/home/vagrant/tema_01_final/job-02/calculator-app.war"
   },
   "builders": [
     {
@@ -32,7 +32,7 @@
     {
       "type": "file",
       "source": "{{user `tomcat_dir`}}",
-      "destination": "/apache-tomcat-10.0.12/webapps/calculator-app.war"
+      "destination": "/home/vagrant/apache-tomcat-10.0.12/webapps/calculator-app.war"
     }
   ],
   "post-processors": [
