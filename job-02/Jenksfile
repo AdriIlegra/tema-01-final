@@ -25,10 +25,7 @@ pipeline {
                             }
                         ]
                     }"""
-                    def rtBuildInfo = rtDownload spec: rtDownloadSpec
-                    server.publishBuildInfo rtBuildInfo
 
-                }
             }
         }
     }
