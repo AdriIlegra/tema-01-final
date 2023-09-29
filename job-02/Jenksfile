@@ -5,7 +5,7 @@ pipeline {
         ARTIFACTORY_SERVER_ID = 'tema-final-01-artifactory'
         DOCKERHUB_USERNAME = credentials('dockerhub')
         DOCKERHUB_PASSWORD = credentials('dockerhub')
-                PATH = "/usr/bin:$PATH"
+               sh "pwd"
 
     }
 
