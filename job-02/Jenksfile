@@ -1,4 +1,3 @@
-
 pipeline {
     agent any
 
@@ -21,8 +20,8 @@ pipeline {
                     def rtDownloadSpec = """{
                         "files": [
                             {
-                                "pattern": "my-repo/my-artifact/*.war", // Substitua com o padrão do seu artefato
-                                "target": "${env.WORKSPACE}/my-artifact.war" // Define o destino local
+                                "pattern": "tema-final-01/calculadora.war",
+                                                             "target": "job-01/build/libs/calculadora.war"
                             }
                         ]
                     }"""
