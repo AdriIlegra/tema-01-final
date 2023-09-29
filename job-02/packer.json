@@ -1,7 +1,7 @@
 {
   "variables": {
-    "dockerhub_username": "{{user `DOCKERHUB_USERNAME`}}",
-    "dockerhub_password": "{{user `DOCKERHUB_PASSWORD`}}",
+    "dockerhub_username": "adriananogueira",
+    "dockerhub_password": "dckr_pat_6FsdxnU6Yye5FkiryB8JrL3hftg",
     "tomcat_dir": "/usr/local/tomcat/webapps/calculator-app.war"
   },
   "builders": [
