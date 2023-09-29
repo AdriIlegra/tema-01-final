@@ -4,6 +4,7 @@ pipeline {
     environment {
         // Defina as variáveis de ambiente necessárias, como as credenciais do Artifactory
         ARTIFACTORY_SERVER_ID = 'calculadora'
+    }
 
     stages {
         stage('Checkout') {
@@ -20,7 +21,7 @@ pipeline {
                         "files": [
                             {
                                 "pattern": "tema-final-01/calculadora.war",
-                                                             "target": "job-01/build/libs/calculadora.war"
+                                "target": "job-01/build/libs/calculadora.war"
                             }
                         ]
                     }"""
@@ -29,6 +30,4 @@ pipeline {
             }
         }
     }
-}
-
 }
