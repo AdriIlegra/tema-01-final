@@ -20,7 +20,6 @@ pipeline {
                             }
                         ]
                     }"""
-                    def rtBuildInfo = rtDownload serverId: rtServerId, spec: rtDownloadSpec
                 }
             }
         }
