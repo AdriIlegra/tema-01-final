@@ -5,17 +5,16 @@ pipeline {
         ARTIFACTORY_SERVER_ID = 'tema-final-01-artifactory'
         DOCKERHUB_USERNAME = credentials('dockerhub')
         DOCKERHUB_PASSWORD = credentials('dockerhub')
-
     }
 
     stages {
-        stage('Checkout') {
+        stage('Verificação do Código') {
             steps {
                 checkout scm
             }
         }
 
-        stage('Download Artefato do JFrog Artifactory') {
+        stage('Download de Artefato do JFrog Artifactory') {
             steps {
                 script {
                     def rtServerId = "tema-final-01-artifactory"
@@ -31,19 +30,19 @@ pipeline {
             }
         }
 
-       stage('Build Docker Image with Packer') {
+       stage('Construir a Imagem Docker com o Packer') {
            steps {
                sh 'packer build -var "DOCKERHUB_USERNAME=${DOCKERHUB_USERNAME}" -var "DOCKERHUB_PASSWORD=${DOCKERHUB_PASSWORD}" job-02/packer.json'
            }
        }
 
-        stage('Deploy Application with Ansible') {
+        stage('Implantar a Aplicação com o Ansible') {
             steps {
                 sh 'ansible-playbook -i inventory.ini playbook.yml'
             }
         }
 
-        stage('Push Docker Image to Docker Hub') {
+        stage('Enviar a Imagem Docker para o Docker Hub') {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials-id', usernameVariable: 'DOCKERHUB_USERNAME', passwordVariable: 'DOCKERHUB_PASSWORD')]) {
                     sh 'docker push adriananogueira/tema_01_final:tagname'
