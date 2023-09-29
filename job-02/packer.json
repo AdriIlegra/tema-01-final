@@ -1,8 +1,8 @@
 {
   "variables": {
     "dockerhub_username": "adriananogueira",
-    "dockerhub_password": "dckr_pat_6FsdxnU6Yye5FkiryB8JrL3hftg",
-    "tomcat_dir": "/var/lib/jenkins/workspace/Job-02/job-02/packer.json'"
+    "dockerhub_password": "dckr_pat_6FsdxnU6Yye5FkiryB8JrL3hftg"
+
   },
   "builders": [
     {
@@ -32,7 +32,7 @@
     {
       "type": "file",
       "source": "{{user `tomcat_dir`}}",
-      "destination": "/home/vagrant/apache-tomcat-10.0.12/webapps/calculator-app.war"
+      "destination": "/home/ubuntu/apache-tomcat-10.0.12.tar.gz"
     }
   ],
   "post-processors": [
