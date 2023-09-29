@@ -45,7 +45,7 @@ pipeline {
         stage('Enviar a Imagem Docker para o Docker Hub') {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials-id', usernameVariable: 'DOCKERHUB_USERNAME', passwordVariable: 'DOCKERHUB_PASSWORD')]) {
-                    sh 'docker push adriananogueira/tema_01_final:tagname'
+                    sh 'docker push adriananogueira/tema_01_final:latest'
                 }
             }
         }
