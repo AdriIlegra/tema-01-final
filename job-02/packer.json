@@ -1,27 +1,45 @@
 {
   "variables": {
-    "dockerhub_username": "",
-    "dockerhub_password": ""
+    "dockerhub_username": "{{user `DOCKERHUB_USERNAME`}}",
+    "dockerhub_password": "{{user `DOCKERHUB_PASSWORD`}}",
+    "tomcat_dir": "/usr/local/tomcat/webapps/calculator-app.war"
   },
   "builders": [
     {
       "type": "docker",
       "image": "ubuntu:20.04",
       "commit": true,
-      "changes": ["EXPOSE 8090"]
+      "author": "adriana.nogueira@ilegra.com",
+      "changes": [
+        "EXPOSE 8090",
+        "CMD [\"apache-tomcat-10.0.12/bin/catalina.sh\", \"run\"]"
+      ]
     }
   ],
   "provisioners": [
     {
+      "type": "shell",
+      "inline": [
+        "apt-get update",
+        "apt-get install ansible -y"
+      ]
+    },
+    {
       "type": "ansible",
-      "playbook_file": "playbook.yml"
+      "playbook_file": "job-02/playbook.yml",
+      "extra_arguments": ["-i", "inventory.ini"]
+    },
+    {
+      "type": "file",
+      "source": "{{user `tomcat_dir`}}",
+      "destination": "/apache-tomcat-10.0.12/webapps/calculator-app.war"
     }
   ],
   "post-processors": [
     {
       "type": "docker-tag",
-      "repository": "suaimagem/calculator-app",
-      "tags": ["1.0"]
+      "repository": "adriananogueira/tema_01_final",
+      "tags": ["1.0", "latest"]
     },
     {
       "type": "docker-push",

@@ -1,40 +1,24 @@
 ---
-- name: Provision and Deploy Calculator App
-  hosts: all
+- name: Deploy Application
+  hosts: target_server  # Substitua "target_server" pelo nome do host ou grupo de hosts onde deseja implantar a aplicação.
+  become: yes  # Torna-se superusuário (root) durante a execução.
+
   tasks:
-    - name: Update apt cache
-      become: yes
-      apt:
-        update_cache: yes
-
-    - name: Install OpenJDK 11
-      become: yes
-      apt:
-        name: openjdk-11-jdk
-        state: present
-
-    - name: Download Apache Tomcat
-      get_url:
-        url: "https://downloads.apache.org/tomcat/tomcat-10/v10.0.12/bin/apache-tomcat-10.0.12.tar.gz"
-        dest: "/tmp/apache-tomcat-10.0.12.tar.gz"
-
-    - name: Extract Apache Tomcat
-      become: yes
-      ansible.builtin.unarchive:
-        src: "/tmp/apache-tomcat-10.0.12.tar.gz"
-        dest: "/opt/"
-        remote_src: yes
-
-    - name: Deploy calculator-app.war
+    - name: Copy WAR file to Tomcat webapps directory
       copy:
-        src: "calculator-app.war"
-        dest: "/opt/apache-tomcat-10.0.12/webapps/calculator-app.war"
+        src: /caminho/do/seu/war/applicacao.war  # Substitua pelo caminho real do seu arquivo WAR.
+        dest: /usr/local/tomcat/webapps/applicacao.war  # Substitua pelo caminho correto do diretório do Tomcat.
 
-    - name: Start Apache Tomcat
-      become: yes
-      shell: "/opt/apache-tomcat-10.0.12/bin/catalina.sh run"
+    - name: Ensure Tomcat service is running
+      service:
+        name: tomcat
+        state: started
 
-  handlers:
-    - name: Restart Tomcat
-      become: yes
-      shell: "/opt/apache-tomcat-10.0.12/bin/catalina.sh restart"
+    - name: Wait for Tomcat to start
+      wait_for:
+        host: localhost
+        port: 8080
+        delay: 10
+        timeout: 60
+
+    # Outras tarefas necessárias, como configurar variáveis de ambiente, reiniciar serviços, etc.
