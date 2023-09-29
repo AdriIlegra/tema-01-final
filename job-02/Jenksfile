@@ -1,6 +1,11 @@
 pipeline {
     agent any
 
+    environment {
+        DOCKERHUB_USERNAME = credentials('dockerhub-username')
+        DOCKERHUB_PASSWORD = credentials('dockerhub-password')
+    }
+
     stages {
         stage('Retrieve WAR file from JFrog Artifactory') {
             steps {
@@ -14,33 +19,35 @@ pipeline {
                             }
                         ]
                     }"""
-
-                    // Use the Artifactory plugin to download the WAR file
-                    def buildInfo = server.download spec: rtDownloadSpec, serverId: rtServerId
-
-                    // Check if the download was successful
-                    if (buildInfo) {
-                        echo "WAR file downloaded successfully."
-                    } else {
-                        error "Failed to download the WAR file from Artifactory."
-                    }
+                    def rtBuildInfo = rtDownload serverId: rtServerId, spec: rtDownloadSpec
                 }
+            }
+        }
+
+        stage('Checkout') {
+            steps {
+                checkout scm
             }
         }
 
         stage('Build Docker Image with Packer') {
             steps {
-                script {
-                    // Define o nome da credencial do Docker Hub
-                    def dockerhubCredentialId = 'dockerhub'
+                sh 'packer build -var "dockerhub_username=${DOCKERHUB_USERNAME}" -var "dockerhub_password=${DOCKERHUB_PASSWORD}" packer.json'
+            }
+        }
 
-                    // Use as credenciais do Docker Hub no comando Packer
-                    withCredentials([usernamePassword(credentialsId: dockerhubCredentialId, usernameVariable: 'DOCKERHUB_USERNAME', passwordVariable: 'DOCKERHUB_PASSWORD')]) {
-                        sh "packer build -var 'dockerhub_username=\$DOCKERHUB_USERNAME' -var 'dockerhub_password=\$DOCKERHUB_PASSWORD' packer.json"
-                    }
+        stage('Deploy Application with Ansible') {
+            steps {
+                sh 'ansible-playbook -i inventory.ini playbook.yml'
+            }
+        }
+
+        stage('Push Docker Image to Docker Hub') {
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKERHUB_USERNAME', passwordVariable: 'DOCKERHUB_PASSWORD')]) {
+                    sh 'docker push adriananogueira/calculadora:latest'
                 }
             }
         }
     }
 }
-
