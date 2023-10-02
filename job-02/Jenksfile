@@ -15,7 +15,7 @@ pipeline {
         stage('Download de Artefato do JFrog Artifactory') {
             steps {
                 script {
-                    def rtServerId = "tema-final-01-artifactory"
+                    def rtServerId = "calculadora"
                     def rtDownloadSpec = """{
                         "files": [
                             {
