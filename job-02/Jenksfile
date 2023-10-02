@@ -36,12 +36,6 @@ pipeline {
            }
        }
 
-        stage('Implantar a Aplicação com o Ansible') {
-            steps {
-                sh 'ansible-playbook -i inventory.ini playbook.yml'
-            }
-        }
-
         stage('Enviar a Imagem Docker para o Docker Hub') {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials-id', usernameVariable: 'DOCKERHUB_USERNAME', passwordVariable: 'DOCKERHUB_PASSWORD')]) {
