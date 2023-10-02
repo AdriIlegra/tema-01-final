@@ -25,14 +25,7 @@ pipeline {
                         ]
                     }"""
 
-                    def server = Artifactory.server rtServerId
-                    def downloadSpec = JsonOutput.fromJson(rtDownloadSpec)
-
-                    def buildInfo = server.download(downloadSpec)
-
-                    echo "Artefato baixado com sucesso do Artifactory"
-                    echo "Nome do artefato: ${buildInfo.actual_md5}"
-                    echo "Caminho do artefato: ${downloadSpec.files[0].pattern}"
+                    server = Artifactory.server rtServerId
                 }
             }
         }
