@@ -2,9 +2,7 @@ pipeline {
     agent any
 
     environment {
-        ARTIFACTORY_SERVER_ID = 'tema-final-01-artifactory'
-        DOCKERHUB_USERNAME = credentials('dockerhub')
-        DOCKERHUB_PASSWORD = credentials('dockerhub')
+        DOCKERHUB_CREDENTIALS = credentials('dockerhub')
     }
 
     stages {
@@ -26,21 +24,29 @@ pipeline {
                             }
                         ]
                     }"""
+
+                    def server = Artifactory.server rtServerId
+                    def downloadSpec = JsonOutput.fromJson(rtDownloadSpec)
+
+                    def buildInfo = server.download(downloadSpec)
+
+                    echo "Artefato baixado com sucesso do Artifactory"
+                    echo "Nome do artefato: ${buildInfo.actual_md5}"
+                    echo "Caminho do artefato: ${downloadSpec.files[0].pattern}"
                 }
             }
         }
 
-       stage('Construir a Imagem Docker com o Packer') {
-           steps {
-               sh 'packer build -var "DOCKERHUB_USERNAME=${DOCKERHUB_USERNAME}" -var "DOCKERHUB_PASSWORD=${DOCKERHUB_PASSWORD}" job-02/packer.json'
-           }
-       }
+        stage('Construir a Imagem Docker com o Packer') {
+            steps {
+                sh 'packer build -var "DOCKERHUB_USERNAME=${DOCKERHUB_CREDENTIALS_USR}" -var "DOCKERHUB_PASSWORD=${DOCKERHUB_CREDENTIALS_PSW}" job-02/packer.json'
+            }
+        }
 
         stage('Enviar a Imagem Docker para o Docker Hub') {
             steps {
-                withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials-id', usernameVariable: 'DOCKERHUB_USERNAME', passwordVariable: 'DOCKERHUB_PASSWORD')]) {
-                    sh 'docker push adriananogueira/tema_01_final:latest'
-                }
+                sh 'docker login -u ${DOCKERHUB_CREDENTIALS_USR} -p ${DOCKERHUB_CREDENTIALS_PSW}'
+                sh 'docker push adriananogueira/tema_01_final:latest'
             }
         }
     }
