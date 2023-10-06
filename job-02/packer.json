@@ -2,7 +2,14 @@
   "variables": {
     "dockerhub_username": "adriananogueira",
     "dockerhub_password": "dckr_pat_6FsdxnU6Yye5FkiryB8JrL3hftg"
-
+  },
+  "required_plugins": {
+    "docker": {
+      "version": ">= 1.0.0"
+    },
+    "ansible": {
+      "version": ">= 2.0.0"
+    }
   },
   "builders": [
     {
