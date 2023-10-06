@@ -1,4 +1,4 @@
-parker = {
+parcker = {
   "required_plugins" : {
     "docker" : {
       "version" : ">= 1.0.0"
