@@ -54,5 +54,11 @@
       "login_username": "{{user `dockerhub_username`}}",
       "login_password": "{{user `dockerhub_password`}}"
     }
-  ]
+  ],
+  "packer": {
+    "ignore_files": [
+      ".gitignore",
+      ".git"
+    ]
+  }
 }
