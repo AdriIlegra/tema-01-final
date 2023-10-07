@@ -1,7 +1,7 @@
 {
   "variables": {
-    "dockerhub_username": "adriananogueira",
-    "dockerhub_password": "your_dockerhub_password"
+    "dockerhub_username": "{{user `dockerhub_username`}}",
+    "dockerhub_password": "{{user `dockerhub_password`}}"
   },
   "builders": [
     {
@@ -18,15 +18,12 @@
   "provisioners": [
     {
       "type": "shell",
-      "inline": [
-        "apt-get update",
-        "apt-get install ansible -y"
-      ]
+      "script": "scripts/setup.sh"
     },
     {
       "type": "ansible",
-      "playbook_file": "job-02/playbook.yml",
-      "extra_arguments": ["-i", "inventory.ini"]
+      "playbook_file": "ansible/playbook.yml",
+      "extra_arguments": ["-i", "ansible/inventory.ini"]
     },
     {
       "type": "file",
