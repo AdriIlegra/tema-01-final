@@ -24,11 +24,6 @@ pipeline {
                             }
                         ]
                     }"""
-
-                    server = Artifactory.server rtServerId
-                    def download = server.download rtDownloadSpec
-                    download.run()
-                }
             }
         }
 
