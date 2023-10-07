@@ -1,15 +1,16 @@
 {
-  "builders": [
-    {
-      "type": "docker",
-      "image": "ubuntu:20.04",
-      "commit": true
-    }
-  ],
-  "provisioners": [
-    {
-      "type": "shell",
-      "script": "job-02/setup.sh"
-    }
-  ]
+  "variables": {
+    "dockerhub_username": "",
+    "dockerhub_password": ""
+  },
+    "builders": [
+        {
+        "type": "docker",
+        "image": "ubuntu:latest",
+        "commit": true,
+        "changes": [
+            "CMD [\"/bin/bash\"]"
+        ]
+        }
+    ]
 }

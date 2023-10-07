@@ -35,9 +35,6 @@ pipeline {
                   }
               }
 
-
-
-
         stage('Enviar a Imagem Docker para o Docker Hub') {
             steps {
                 sh 'docker login -u ${DOCKERHUB_CREDENTIALS_USR} -p ${DOCKERHUB_CREDENTIALS_PSW}'
