@@ -1,40 +1,9 @@
 ---
-- name: Install and provide a functional Apache Tomcat Server
+- name: Install java 17
   hosts: localhost
-  become: yes
+  become: true
 
   tasks:
-    - name: Install correct Java version - OpenJDK 11 Headless
+    - name: Install java 17
       apt:
-        name: openjdk-11-jre-headless
-        state: present
-
-    - name: Baixar Apache Tomcat
-      get_url:
-        url: https://downloads.apache.org/tomcat/tomcat-9/v9.0.41/bin/apache-tomcat-9.0.41.tar.gz
-        dest: /opt/apache-tomcat-9.0.41.tar.gz
-        mode: '0755'
-        owner: root
-        group: root
-        validate_certs: no
-        force: yes
-
-    - name: Descompactar o arquivo
-      unarchive:
-        src: /opt/apache-tomcat-9.0.41.tar.gz
-        dest: /opt/
-        remote_src: yes
-        owner: root
-        group: root
-        mode: '0755'
-
-    - name: Copiar o arquivo de configuração do serviço
-      copy:
-        src: /caminho/local/para/tomcat.service
-        dest: /etc/systemd/system/tomcat.service
-        owner: root
-        group: root
-        mode: '0755'
-      notify:
-        - restart tomcat
-
+        name: openjdk-17-jre
