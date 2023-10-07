@@ -1,29 +1,15 @@
 {
-  "variables": {
-    "dockerhub_username": "adriananogueira",
-    "dockerhub_password": "123Mudar@"
-  },
   "builders": [
     {
       "type": "docker",
-      "image": "ubuntu",
+      "image": "ubuntu:20.04",
       "commit": true
     }
   ],
   "provisioners": [
     {
       "type": "shell",
-      "script": "scripts/setup.sh"
-    }
-  ],
-  "post-processors": [
-    {
-      "type": "docker-tag",
-      "repository": "adriananogueira/tema_01_final",
-      "tag": "latest"
-    },
-    {
-      "type": "docker-push"
+      "script": "job-02/setup.sh"
     }
   ]
 }
