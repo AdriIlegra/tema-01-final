@@ -9,7 +9,7 @@
         "image": "ubuntu",
         "commit": true,
         "changes": [
-            "CMD [\"/bin/bash\"]"
+            "CMD [\"my_image /bin/bash\"]"
         ]
         }
     ]
