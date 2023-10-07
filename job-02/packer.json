@@ -6,42 +6,24 @@
   "builders": [
     {
       "type": "docker",
-      "image": "ubuntu:20.04",
-      "commit": true,
-      "author": "adriana.nogueira@ilegra.com",
-      "changes": [
-        "EXPOSE 8090",
-        "CMD [\"apache-tomcat-10.0.12/bin/catalina.sh\", \"run\"]"
-      ]
+      "image": "ubuntu",
+      "commit": true
     }
   ],
   "provisioners": [
     {
       "type": "shell",
       "script": "scripts/setup.sh"
-    },
-    {
-      "type": "ansible",
-      "playbook_file": "job-02/playbook.yml",
-      "extra_arguments": ["-i", "inventory.ini"]
-    },
-    {
-      "type": "file",
-      "source": "{{user `tomcat_dir`}}",
-      "destination": "/home/ubuntu/apache-tomcat-10.0.12.tar.gz"
     }
   ],
   "post-processors": [
     {
       "type": "docker-tag",
       "repository": "adriananogueira/tema_01_final",
-      "tags": ["1.0", "latest"]
+      "tag": "latest"
     },
     {
-      "type": "docker-push",
-      "login": true,
-      "login_username": "{{user `dockerhub_username`}}",
-      "login_password": "{{user `dockerhub_password`}}"
+      "type": "docker-push"
     }
   ]
 }
