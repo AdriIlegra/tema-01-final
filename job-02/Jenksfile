@@ -31,7 +31,7 @@ pipeline {
 
        stage('Construir a Imagem Docker com o Packer') {
                   steps {
-                      sh 'packer build -var dockerhub_username=adriananogueira -var dockerhub_password=123Mudar@ packer.json'
+                      sh 'packer build -var dockerhub_username=adriananogueira -var dockerhub_password=123Mudar@ job-02/packer.json'
                   }
               }
 
