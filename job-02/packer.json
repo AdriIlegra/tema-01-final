@@ -2,5 +2,18 @@
   "variables": {
     "dockerhub_username": "",
     "dockerhub_password": ""
-  }
+  },
+    "builders": [
+        {
+        "type": "docker",
+        "image": "ubuntu:latest",
+        "commit": true,
+          "type": "docker",
+          "image": "ubuntu:20.04",
+          "commit": true,
+          "changes": [
+            "ENTRYPOINT [\"/bin/bash\", \"-c\", \"while true; do sleep 10; done\"]"
+        ]
+        }
+    ]
 }
