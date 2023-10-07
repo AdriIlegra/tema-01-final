@@ -1,81 +1,44 @@
-variables = {
-  "required_plugins" : {
-    "docker" : {
-      "version" : ">= 1.0.0"
-    },
-    "ansible" : {
-      "version" : ">= 2.0.0"
-    }
-  },
-docker = {
-  "version" = ">= 1.0.0"
-  "source"  = "github.com/hashicorp/docker"
-}
-ansible = {
-  "version" = ">= 1.0.0"
-  "source"  = "github.com/hashicorp/ansible"
+# job-02/packer.pkr.hcl
+source "docker" "ubuntu" {
+  image   = "ubuntu:20.04"
+  commit  = true
+  author  = "adriana.nogueira@ilegra.com"
+
+  changes = [
+    "EXPOSE 8090",
+    "CMD [\"apache-tomcat-10.0.12/bin/catalina.sh\", \"run\"]"
+  ]
 }
 
-"variables" : {
-"dockerhub_username" : "adriananogueira",
-"dockerhub_password" : "dckr_pat_6FsdxnU6Yye5FkiryB8JrL3hftg"
-},
-"required_plugins" : {
-"docker" : {
-"version" : ">= 1.0.0"
-},
-"ansible" : {
-"version" : ">= 2.0.0"
+build {
+  sources = ["source.docker.ubuntu"]
+  builders = ["docker"]
 }
-},
-"builders" : [
-{
-"type" : "docker",
-"image" : "ubuntu:20.04",
-"commit" : true,
-"author" : "adriana.nogueira@ilegra.com",
-"changes" : [
-"EXPOSE 8090",
-"CMD [\"apache-tomcat-10.0.12/bin/catalina.sh\", \"run\"]"
-]
+
+provisioner "shell" {
+  inline = [
+    "apt-get update",
+    "apt-get install ansible -y"
+  ]
 }
-],
-"provisioners" : [
-{
-"type" : "shell",
-"inline" : [
-"apt-get update",
-"apt-get install ansible -y"
-]
-},
-{
-"type" : "ansible",
-"playbook_file" : "job-02/playbook.yml",
-"extra_arguments" : ["-i", "inventory.ini"]
-},
-{
-"type" : "file",
-"source" : "{{user `tomcat_dir`}}",
-"destination" : "/home/ubuntu/apache-tomcat-10.0.12.tar.gz"
+
+provisioner "ansible" {
+  playbook_file    = "job-02/playbook.yml"
+  extra_arguments  = ["-i", "inventory.ini"]
 }
-],
-"post-processors" : [
-{
-"type" : "docker-tag",
-"repository" : "adriananogueira/tema_01_final",
-"tags" : ["1.0", "latest"]
-},
-{
-"type" : "docker-push",
-"login" : true,
-"login_username" : "{{user `dockerhub_username`}}",
-"login_password" : "{{user `dockerhub_password`}}"
+
+provisioner "file" {
+  source      = "{{user `tomcat_dir`}}"
+  destination = "/home/ubuntu/apache-tomcat-10.0.12.tar.gz"
 }
-],
-"packer" : {
-"ignore_files" : [
-".gitignore",
-".git"
-]
+
+post-processor "docker-tag" {
+  repository = "adriananogueira/tema_01_final"
+  tags       = ["1.0", "latest"]
 }
+
+post-processor "docker-push" {
+  login            = true
+  login_username   = var.DOCKERHUB_USERNAME
+  login_password   = var.DOCKERHUB_PASSWORD
 }
