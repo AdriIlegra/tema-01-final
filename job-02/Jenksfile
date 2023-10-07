@@ -32,7 +32,8 @@ pipeline {
 
         stage('Construir a Imagem Docker com o Packer') {
             steps {
-                sh 'packer build -var "DOCKERHUB_USERNAME=adriananogueira" -var "DOCKERHUB_PASSWORD=123Mudar@" job-02/packer.pkr.hcl'
+                sh 'packer build -var-file=variables.pkr.hcl job-02/packer.pkr.hcl
+
             }
         }
 
