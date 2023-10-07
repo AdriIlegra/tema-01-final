@@ -2,15 +2,5 @@
   "variables": {
     "dockerhub_username": "",
     "dockerhub_password": ""
-  },
-    "builders": [
-        {
-        "type": "docker",
-        "image": "ubuntu:latest",
-        "commit": true,
-        "changes": [
-            "CMD [\"/bin/bash\"]"
-        ]
-        }
-    ]
+  }
 }
