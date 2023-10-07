@@ -6,13 +6,10 @@
     "builders": [
         {
         "type": "docker",
-        "image": "ubuntu:latest",
+        "image": "ubuntu",
         "commit": true,
-          "type": "docker",
-          "image": "ubuntu:20.04",
-          "commit": true,
-          "changes": [
-            "ENTRYPOINT [\"/bin/bash\", \"-c\", \"while true; do sleep 10; done\"]"
+        "changes": [
+            "CMD [\"/bin/bash\"]"
         ]
         }
     ]
