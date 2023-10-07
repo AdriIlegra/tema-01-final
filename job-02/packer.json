@@ -9,10 +9,8 @@
       "image": "ubuntu:20.04",
       "commit": true,
       "author": "adriana.nogueira@ilegra.com",
-      "changes": [
-        "EXPOSE 8090",
-        "CMD [\"apache-tomcat-10.0.12/bin/catalina.sh\", \"run\"]"
-      ]
+      "changes": ["EXPOSE 8090", "CMD [\"apache-tomcat-10.0.12/bin/catalina.sh\", \"run\"]"],
+      "run_command": ["sh", "-c", "scripts/setup.sh"]
     }
   ],
   "provisioners": [
