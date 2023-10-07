@@ -33,7 +33,7 @@ pipeline {
             steps {
                 sh 'packer plugins install github.com/hashicorp/docker'
                        sh 'packer plugins install github.com/hashicorp/ansible'
-                       sh 'packer build -var dockerhub_username=adriananogueira -var dockerhub_password=123Mudar@ job-02/packer.json'
+                       sh 'packer build -var "dockerhub_credentials=${DOCKERHUB_CREDENTIALS_USR}:${DOCKERHUB_CREDENTIALS_PSW}" -var "artifactory_credentials=${ARTIFACTORY_CREDENTIALS_USR}:${ARTIFACTORY_CREDENTIALS_PSW}" -var "artifactory_url=${ARTIFACTORY_URL}" -var "artifactory_repo=${ARTIFACTORY_REPO}" -var "artifactory_repo_key=${ARTIFACTORY_REPO_KEY}" -var "artifactory_repo_user=${ARTIFACTORY_REPO_USER}" -var "artifactory_repo_password=${ARTIFACTORY_REPO_PASSWORD}" -var "artifactory_repo_email=${ARTIFACTORY_REPO_EMAIL}" -var "artifactory_repo_package=${ARTIFACTORY_REPO_PACKAGE}" -var "artifactory_repo_version=${ARTIFACTORY_REPO_VERSION}" -var "artifactory_repo_package_file=${ARTIFACTORY_REPO_PACKAGE_FILE}" -var "artifactory_repo_package_file_path=${ARTIFACTORY_REPO_PACKAGE_FILE_PATH}" -var "artifactory_repo_package_file_target=${ARTIFACTORY_REPO_PACKAGE_FILE_TARGET}" job-02/packer.json'
             }
         }
 
