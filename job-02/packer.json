@@ -1,7 +1,7 @@
 {
   "variables": {
-    "dockerhub_username": "{{user `dockerhub_username`}}",
-    "dockerhub_password": "{{user `dockerhub_password`}}"
+    "dockerhub_username": "adriananogueira",
+    "dockerhub_password": "123Mudar@"
   },
   "builders": [
     {
@@ -9,8 +9,10 @@
       "image": "ubuntu:20.04",
       "commit": true,
       "author": "adriana.nogueira@ilegra.com",
-      "changes": ["EXPOSE 8090", "CMD [\"apache-tomcat-10.0.12/bin/catalina.sh\", \"run\"]"],
-      "run_command": ["sh", "-c", "scripts/setup.sh"]
+      "changes": [
+        "EXPOSE 8090",
+        "CMD [\"apache-tomcat-10.0.12/bin/catalina.sh\", \"run\"]"
+      ]
     }
   ],
   "provisioners": [
@@ -20,8 +22,8 @@
     },
     {
       "type": "ansible",
-      "playbook_file": "ansible/playbook.yml",
-      "extra_arguments": ["-i", "ansible/inventory.ini"]
+      "playbook_file": "job-02/playbook.yml",
+      "extra_arguments": ["-i", "inventory.ini"]
     },
     {
       "type": "file",
