@@ -24,13 +24,14 @@ pipeline {
                             }
                         ]
                     }"""
+                    server = Artifactory.server rtServerId
                 }
             }
         }
 
         stage('Construir a Imagem Docker com o Packer') {
             steps {
-                sh 'packer build -var-file=variables.pkr.hcl job-02/packer.pkr.hcl'
+                sh 'packer build -var-file=variables.pkr.hcl job-02/packer.json'
             }
         }
 
