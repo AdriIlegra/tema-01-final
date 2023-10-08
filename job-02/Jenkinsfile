@@ -20,7 +20,7 @@ pipeline {
                         "files": [
                             {
                                 "pattern": "tema-final-01/calculadora.war",
-                                "target": "job-02/build/libs/calculadora.war"
+                                "target": "job-01/build/libs/calculadora.war"
                             }
                         ]
                     }"""
@@ -32,19 +32,18 @@ pipeline {
 
         stage('Construir a Imagem Docker com o Packer') {
             steps {
-                sh 'packer plugins install github.com/hashicorp/docker'
+                sh 'packer init job-02'
                 sh 'packer build -var "dockerhub_username=adriananogueira" -var "dockerhub_password=123Mudar@" job-02/packer.json'
             }
         }
 
         stage('Enviar a Imagem Docker para o Docker Hub') {
             steps {
-                withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKERHUB_USERNAME', passwordVariable: 'DOCKERHUB_PASSWORD')]) {
-                    sh "docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD"
-                    sh "docker push adriananogueira/tema_01_final:latest"
+                withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKERHUB_CREDENTIALS_USR', passwordVariable: 'DOCKERHUB_CREDENTIALS_PSW')]) {
+                    sh 'docker login -u $DOCKERHUB_CREDENTIALS_USR -p $DOCKERHUB_CREDENTIALS_PSW'
+                    sh 'docker push adriananogueira/tema_01_final:latest'
                 }
             }
         }
     }
-}
 }
