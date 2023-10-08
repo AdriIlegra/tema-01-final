@@ -2,19 +2,31 @@ pipeline {
     agent any
 
     stages {
-        stage('Construir a Imagem Docker com o Packer') {
-            steps {
-                script {
-                    // Comandos para construir a imagem Docker (Packer, Dockerfile, etc.)
-                    sh 'packer plugins install github.com/hashicorp/docker'
-                    sh 'packer plugins install github.com/hashicorp/ansible'
-                    sh 'packer build -var "dockerhub_username=adriananogueira" -var "dockerhub_password=123Mudar@" job-02/packer.json'
 
-                    // Agora que a imagem foi construída, podemos fazer o push para um registro de contêiner
-                    // Certifique-se de substituir "adriananogueira/tema_01_final:latest" pelo nome e tag corretos.
-                    sh 'docker push adriananogueira/tema_01_final:latest'
-                }
+        stage('Retrieving WAR file from JFrog Artifactory') {
+            steps {
+                rtDownload(
+                    serverId: "tema-final-01-artifactory",
+                    spec: """{
+                        "files": [
+                        {
+                            "pattern": "job-01/build/libs/calculator-app.war",
+                            "target": "job-02/"
+                        }
+                        ]
+                    } """
+
+                    )
             }
+        }
+
+        stage('Building a Docker image through Packer and pushing to Docker Hub') {
+        steps {
+            withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials', usernameVariable: 'DOCKERHUB_USERNAME', passwordVariable: 'DOCKERHUB_PASSWORD')]) {
+                sh "packer build --var dockerhub_username=$DOCKERHUB_USERNAME --var dockerhub_password=$DOCKERHUB_PASSWORD job-02/packer.json"
+            }
+          }
         }
     }
 }
+

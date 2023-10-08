@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="br.adriana.nogueira.tema04.CalculatorServiceTest" tests="7" skipped="0" failures="0" errors="0" timestamp="2023-10-08T15:29:03" hostname="adriana-Inspiron-15-3567" time="0.084">
+  <properties/>
+  <testcase name="testDivideByZero()" classname="br.adriana.nogueira.tema04.CalculatorServiceTest" time="0.048"/>
+  <testcase name="testPow()" classname="br.adriana.nogueira.tema04.CalculatorServiceTest" time="0.005"/>
+  <testcase name="testSum()" classname="br.adriana.nogueira.tema04.CalculatorServiceTest" time="0.008"/>
+  <testcase name="testSubtract()" classname="br.adriana.nogueira.tema04.CalculatorServiceTest" time="0.005"/>
+  <testcase name="contextLoads()" classname="br.adriana.nogueira.tema04.CalculatorServiceTest" time="0.001"/>
+  <testcase name="testDivide()" classname="br.adriana.nogueira.tema04.CalculatorServiceTest" time="0.001"/>
+  <testcase name="testMultiply()" classname="br.adriana.nogueira.tema04.CalculatorServiceTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

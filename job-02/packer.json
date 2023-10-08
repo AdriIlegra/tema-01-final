@@ -1,19 +1,27 @@
 {
-  "builders": [
-    {
-      "type": "docker",
-      "image": "ubuntu:latest"
-    }
-  ],
+  "variables": {
+    "dockerhub_username": "",
+    "dockerhub_password": ""
+    },
+    "builders": [
+        {
+        "type": "docker",
+        "image": "ubuntu",
+        "commit": true,
+          "changes": [
+            "EXPOSE 8080",
+            "CMD [\"apache-tomcat-10.0.12/bin/catalina.sh\", \"run\"]"
+        ]
+        }
+    ],
 
-  "provisioners": [
-    {
-      "type": "shell",
-      "inline": [
-        "apt-get update",
-        "apt-get install -y some-package",
-        "apt-get clean"
-      ]
-    }
-  ]
+"provisioners": [
+{
+"type": "shell",
+"inline": [
+"apt-get update",
+"apt-get install ansible -y"
+]
+}
+]
 }
