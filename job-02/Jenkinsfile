@@ -2,46 +2,15 @@ pipeline {
     agent any
 
     environment {
-        DOCKERHUB_CREDENTIALS = credentials('dockerhub')
+        CI = 'true'
+        ARTIFACTORY_SERVER_ID = 'calculadora' // Nome do servidor de Artifactory configurado no Jenkins
     }
 
     stages {
-        stage('Verificação do Código') {
-            steps {
-                checkout scm
-            }
-        }
-
-        stage('Download de Artefato do JFrog Artifactory') {
+        stage('Connect to Git Repository') {
             steps {
                 script {
-                    def rtServerId = "calculadora"
-                    def rtDownloadSpec = """{
-                        "files": [
-                            {
-                                "pattern": "tema-final-01/calculadora.war",
-                                "target": "job-01/build/libs/calculadora.war"
-                            }
-                        ]
-                    }"""
-                    server = Artifactory.server rtServerId
-                    server.download spec: rtDownloadSpec
-                }
-            }
-        }
-
-        stage('Construir a Imagem Docker com o Packer') {
-            steps {
-                sh 'packer init job-02'
-                sh 'packer build -var "dockerhub_username=adriananogueira" -var "dockerhub_password=123Mudar@" job-02/packer.json'
-            }
-        }
-
-        stage('Enviar a Imagem Docker para o Docker Hub') {
-            steps {
-                withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKERHUB_CREDENTIALS_USR', passwordVariable: 'DOCKERHUB_CREDENTIALS_PSW')]) {
-                    sh 'docker login -u $DOCKERHUB_CREDENTIALS_USR -p $DOCKERHUB_CREDENTIALS_PSW'
-                    sh 'docker push adriananogueira/tema_01_final:latest'
+                    checkout scm
                 }
             }
         }
