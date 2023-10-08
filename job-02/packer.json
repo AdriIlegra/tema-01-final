@@ -7,10 +7,8 @@
         {
         "type": "docker",
         "image": "ubuntu",
-        "commit": true,
-        "changes": [
-            "CMD [\"my_image /bin/bash\"]"
-        ]
+        "commit": true
+
         }
     ]
 }
