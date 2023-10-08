@@ -1,27 +1,35 @@
 {
   "variables": {
-    "dockerhub_username": "",
-    "dockerhub_password": ""
-    },
-    "builders": [
-        {
-        "type": "docker",
-        "image": "ubuntu",
-        "commit": true,
-          "changes": [
-            "EXPOSE 8080",
-            "CMD [\"apache-tomcat-10.0.12/bin/catalina.sh\", \"run\"]"
-        ]
-        }
-    ],
+    "dockerhub_username": "{{user `dockerhub_username`}}",
+    "dockerhub_password": "{{user `dockerhub_password`}}"
+  },
+  "builders": [
+    {
+      "type": "docker",
+      "image": "ubuntu:20.04",
+      "commit": true,
+      "author": "seu_email@example.com",
+      "changes": [
+        "EXPOSE 8090",
+        "CMD [\"apache-tomcat-10.0.12/bin/catalina.sh\", \"run\"]"
+      ]
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "shell",
+      "inline": [
+        "apt-get update",
+        "apt-get install -y apache2"
 
-"provisioners": [
-{
-"type": "shell",
-"inline": [
-"apt-get update",
-"apt-get install ansible -y"
-]
-}
-]
+      ]
+    }
+  ],
+  "post-processors": [
+    {
+      "type": "docker-tag",
+      "repository": "adriananogueira/tema_01_final",
+      "tag": "latest"
+    }
+  ]
 }
