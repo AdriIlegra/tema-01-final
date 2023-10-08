@@ -29,7 +29,7 @@ pipeline {
                   steps {
                       sh 'packer plugins install github.com/hashicorp/docker'
                       sh 'packer plugins install github.com/hashicorp/ansible'
-                      sh 'packer build -var "dockerhub_username=${DOCKERHUB_USERNAME}" -var "dockerhub_password=${DOCKERHUB_PASSWORD}" job-02/packer.json'
+                      sh 'packer build -var "dockerhub_username=${DOCKERHUB_USERNAME}" -var "dockerhub_password=${DOCKERHUB_PASSWORD}" job-03/packer.json'
                   }
               }
 
