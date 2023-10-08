@@ -5,7 +5,7 @@ pipeline {
    stages {
       stage('Download Image from Docker Hub') {
          steps {
-            sh 'docker pull adriananogueira/tema_01_final:latest'
+            sh 'docker pull adriananogueira/tema_01_final:tagname'
          }
       }
 
