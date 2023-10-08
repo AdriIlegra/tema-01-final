@@ -1,7 +1,7 @@
 {
   "variables": {
-    "dockerhub_username": "{{user `dockerhub_username`}}",
-    "dockerhub_password": "{{user `dockerhub_password`}}"
+    "dockerhub_username": "{{user `DOCKERHUB_USERNAME`}}",
+    "dockerhub_password": "{{user `DOCKERHUB_PASSWORD`}}"
   },
   "builders": [
     {
