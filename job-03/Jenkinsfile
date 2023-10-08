@@ -6,7 +6,7 @@ pipeline {
         stage('Retrieving WAR file from JFrog Artifactory') {
             steps {
                 rtDownload(
-                    serverId: "tema-final-01-artifactory",
+                    serverId: "calculadora",
                     spec: """{
                         "files": [
                         {
