@@ -1,12 +1,12 @@
 pipeline {
     agent any
+
     environment {
-     DOCKERHUB_USERNAME = credentials('DOCKERHUB_USERNAME')
+        DOCKERHUB_USERNAME = credentials('DOCKERHUB_USERNAME')
         DOCKERHUB_PASSWORD = credentials('DOCKERHUB_PASSWORD')
-        }
+    }
 
     stages {
-
         stage('Retrieving WAR file from JFrog Artifactory') {
             steps {
                 rtDownload(
@@ -19,25 +19,22 @@ pipeline {
                         }
                         ]
                     } """
-
-                    )
+                )
             }
         }
 
-        stage('Construir a Imagem Docker com o Packer') {
-                  steps {
-                      sh 'packer plugins install github.com/hashicorp/docker'
-                      sh 'packer plugins install github.com/hashicorp/ansible'
-                      sh 'packer build -var "dockerhub_username=${DOCKERHUB_USERNAME}" -var "dockerhub_password=${DOCKERHUB_PASSWORD}" job-03/packer.json'
-                  }
-              }
+        stage('Build Docker Image with Packer') {
+            steps {
+                sh 'packer plugins install github.com/hashicorp/docker'
+                sh 'packer build -var "dockerhub_username=${DOCKERHUB_USERNAME}" -var "dockerhub_password=${DOCKERHUB_PASSWORD}" job-03/packer.json'
+            }
+        }
 
-              stage('Enviar a Imagem Docker para o Docker Hub') {
-                  steps {
-                      sh 'docker login -u ${DOCKERHUB_USERNAME} -p ${DOCKERHUB_PASSWORD}'
-                      sh 'docker push adriananogueira/tema_01_final:latest'
-                  }
-              }
-          }
-      }
-
+        stage('Push Docker Image to Docker Hub') {
+            steps {
+                sh 'docker login -u ${DOCKERHUB_USERNAME} -p ${DOCKERHUB_PASSWORD}'
+                sh 'docker push adriananogueira/tema_01_final:latest'
+            }
+        }
+    }
+}
