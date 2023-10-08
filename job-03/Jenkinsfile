@@ -1,9 +1,9 @@
 pipeline {
     agent any
     environment {
-            DOCKERHUB_CREDENTIALS = credentials('dockerhub')
-              DOCKERHUB_USERNAME = DOCKERHUB_CREDENTIALS_USR
-              DOCKERHUB_PASSWORD = DOCKERHUB_CREDENTIALS_PSW
+      DOCKERHUB_CREDENTIALS = credentials('dockerhub')
+              DOCKERHUB_USERNAME = "${DOCKERHUB_CREDENTIALS_USR}"
+              DOCKERHUB_PASSWORD = "${DOCKERHUB_CREDENTIALS_PSW
         }
 
     stages {
@@ -25,13 +25,20 @@ pipeline {
             }
         }
 
-        stage('Building a Docker image through Packer and pushing to Docker Hub') {
-        steps {
-            withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials', usernameVariable: 'DOCKERHUB_USERNAME', passwordVariable: 'DOCKERHUB_PASSWORD')]) {
-                    sh "packer build --var 'dockerhub_username=${dockerhubCredentials_USR}' --var 'dockerhub_password=${dockerhubCredentials_PSW}' job-02/packer.json"
-            }
+        stage('Construir a Imagem Docker com o Packer') {
+                  steps {
+                      sh 'packer plugins install github.com/hashicorp/docker'
+                      sh 'packer plugins install github.com/hashicorp/ansible'
+                      sh 'packer build -var "dockerhub_username=${DOCKERHUB_USERNAME}" -var "dockerhub_password=${DOCKERHUB_PASSWORD}" job-02/packer.json'
+                  }
+              }
+
+              stage('Enviar a Imagem Docker para o Docker Hub') {
+                  steps {
+                      sh 'docker login -u ${DOCKERHUB_USERNAME} -p ${DOCKERHUB_PASSWORD}'
+                      sh 'docker push adriananogueira/tema_01_final:latest'
+                  }
+              }
           }
-        }
-    }
-}
+      }
 
