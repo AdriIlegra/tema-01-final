@@ -29,7 +29,12 @@ pipeline {
             }
         }
 
-
+       stage('Construir a Imagem Docker com o Packer') {
+                  steps {
+                        sh 'packer validate job-02/packer.json'
+                        sh 'packer build -var dockerhub_username=adriananogueira -var dockerhub_password=123Mudar@ job-02/packer.json'
+                  }
+              }
 
         stage('Enviar a Imagem Docker para o Docker Hub') {
             steps {
